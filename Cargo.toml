@@ -1,0 +1,18 @@
+[package]
+name = "napal"
+version = "0.1.0"
+authors = ["Válter Santos <valter.santos@outsystems.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0"
+csv = "1.1.3"
+plotters = "0.2"
+chrono = "0.4"
+statrs = "0.12.0"
+rayon = "1.3.0"
+handlebars = "3.0.1"
+serde_json = "1.0"
+serde = { version = "1.0", features = ["derive"] }
