@@ -16,7 +16,7 @@ This is a tool that analyses .csv files and generates plots. The current use is 
 
 `.\napal.exe -v -wm specific-metrics.txt testfile.csv`
 
- - This will print debug information, use the metrics located in the specific-metrics.txt file and use the plot settings and plot colors located in the config/ directory
+ - This will print debug information, use the metrics located in the specific-metrics.txt file and use the plot settings and plot colors located in the config/ directory.
 
 `.\napal.exe testfile1.csv testfile2.csv`
 
@@ -35,7 +35,7 @@ This will use the default settings and create plots with two lines. This allows 
 - This is mandatory to be the last argument.
 
 **[-t or -targetDir]**
-- The directory where the results will be saved
+- The directory where the results will be saved.
 - Default is `results/{year}-{month}-{day}_{hour}-{minute}-{second}`
 	- Example: results/2021-05-18_10-10-10
 	- Do note that the results/dir will be placed in the working directory.
@@ -45,15 +45,15 @@ This will use the default settings and create plots with two lines. This allows 
 - Default is `config/DefaultMetrics.txt`. [(link)](<config/DefaultMetrics.txt>)
 
 **[-ps or -plotSettings]**
-- The path for the file that contains the settings to be used when plotting
+- The path for the file that contains the settings to be used when plotting.
 - Default is `config/DefaultPlotSettings.txt`. [(link)](<config/DefaultPlotSettings.txt>)
 
 **[-c or -colorsFile]**
-- The path for the file that contains a list of the colors to be used in the graphs (by order)
+- The path for the file that contains a list of the colors to be used in the graphs (by order).
 - Default is `config/DefaultPlotLineColors.txt`. [(link)](<config/DefaultPlotLineColors.txt>)
 
 **[-w or -widthPerPoint]**
-- The width of the generated image per given point in each graph (x axis).
+- The width of each point in the plots. (x axis).
 - Default is 1.
 
 **[-s or -skipParse]**
