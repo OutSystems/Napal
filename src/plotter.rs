@@ -1,6 +1,7 @@
 
 use std::time::Instant;
 use std::path::Path;
+use log::{debug, info};
 use plotters::prelude::*;
 use rayon::prelude::*;
 use std::str::FromStr;
@@ -17,6 +18,7 @@ use crate::parameters::TimeFormat;
 
 pub fn generate_plots(loaded_data: &LoadedData, param: &Parameters) -> Result<()> {
     let start = Instant::now();
+    info!("Generating plots..");
 
     // For every metric, create a new graph with every file that has said metric.
     // Parallel!
@@ -37,12 +39,13 @@ pub fn generate_plots(loaded_data: &LoadedData, param: &Parameters) -> Result<()
     });
 
 
-    println!("Parallel Generate plots duration: {:?}", start.elapsed());
+    debug!("Parallel Generate plots duration: {:?}", start.elapsed());
+    
     Ok(())
 }
 
 fn create_plot(file_datas: Vec<&FileData>, metric: String, param: &Parameters, plot_settings: &PlotterSettings) -> Result<()> {
-    println!("Creating plot for {}", metric);
+    debug!("Creating plot for {}", metric);
 
     // Image filename
     let base_path = Path::new(&param.target_directory);
@@ -199,7 +202,7 @@ fn get_settings(_width: usize, _height: usize, param: &Parameters) -> PlotterSet
         stroke_width: 2
     };
 
-    let file = File::open(&param.plotter_config_file).unwrap();
+    let file = File::open(&param.plotter_config_file).with_context(|| format!("Could not open file {:?}", param.plotter_config_file)).unwrap();
     let reader = io::BufReader::new(file).lines();
     for result_line in reader {
         if let Ok(line) = result_line {
@@ -232,7 +235,7 @@ fn get_settings(_width: usize, _height: usize, param: &Parameters) -> PlotterSet
         }
     }
 
-    println!("Plot settings: {:?}", plot_settings);
+    debug!("Plot settings: {:?}", plot_settings);
 
     plot_settings
 }

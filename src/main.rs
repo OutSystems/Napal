@@ -5,8 +5,10 @@ mod parameters;
 mod plotter;
 mod statistics;
 
+use std::time::Instant;
 use std::path::PathBuf;
 use anyhow::Result;
+use log::info;
 
 use crate::csv_extracter::extract_columns_base;
 use crate::data_loader::LoadedData;
@@ -17,6 +19,7 @@ use crate::statistics::Statistics;
 
 
 fn main() -> Result<()>  {
+    let start = Instant::now();
     let (param, file_list) = Parameters::obtain();
     param.print();
     let parsed_files_list: Vec<PathBuf> = file_list.clone().into_iter().map(|path| path.with_extension("_altered.csv")).collect();
@@ -26,6 +29,8 @@ fn main() -> Result<()>  {
     generate_plots(&loaded_data, &param)?;
     let statistics = Statistics::calculate_statistics(&loaded_data);
     generate_html(&statistics, &param)?;
+
+    info!("Done! Program execution duration: {:?}", start.elapsed());
 
     Ok(())
 }

@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::collections::HashSet;
 use anyhow::{Context, Result};
+use log::{debug, info};
 use std::fs::File;
 use std::time::Instant;
 use std::path::PathBuf;
@@ -55,6 +56,7 @@ impl LoadedData {
 
     pub fn load_file_data(cvs_file_list: &Vec<PathBuf>, param: &Parameters) -> Result<LoadedData> {
         let start = Instant::now();
+        info!("Loading csv..");
     
         // Initialize Data
         let mut data: Vec<FileData> = Vec::new();
@@ -110,7 +112,7 @@ impl LoadedData {
             data.push(file_data);
         }
     
-        println!("Sequencial Data loading duration: {:?}", start.elapsed());
+        debug!("Sequencial Data loading duration: {:?}", start.elapsed());
         Ok(LoadedData { file_data: data })
     }
 }

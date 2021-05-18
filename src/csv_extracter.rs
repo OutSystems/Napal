@@ -1,4 +1,5 @@
 use anyhow::{Context, Result};
+use log::{debug, info};
 use std::io::{self, BufRead};
 use std::fs::File;
 use std::path::PathBuf;
@@ -15,7 +16,8 @@ struct MetricRules {
 
 pub fn extract_columns_base(file_list: &Vec<PathBuf>, parsed_file_list: &Vec<PathBuf>, param: &Parameters) {
     if !param.skip_parse {
-        println!("Parallel Parsing files: {:?}", &file_list);
+        debug!("Parallel Parsing files: {:?}", &file_list);
+        info!("Parsing csv..");
         let start = Instant::now();
 
         let rules = extract_metric_rules(&param.wanted_metrics_file).unwrap();
@@ -29,7 +31,7 @@ pub fn extract_columns_base(file_list: &Vec<PathBuf>, parsed_file_list: &Vec<Pat
                 }
             });
 
-        println!("TOTAL extraction duration: {:?}", start.elapsed());
+        debug!("TOTAL extraction duration: {:?}", start.elapsed());
     }
 }
 
@@ -58,8 +60,8 @@ fn extract_metric_rules(wanted_metrics_location: &PathBuf) -> Result<MetricRules
         }
     }
 
-    println!("Looking for metrics that contain: {:?}", metrics);
-    println!("Ignoring any metrics that contain {:?}", ignore);
+    debug!("Looking for metrics that contain: {:?}", metrics);
+    debug!("Ignoring any metrics that contain {:?}", ignore);
 
     Ok(MetricRules {
         metrics,
@@ -91,7 +93,7 @@ fn extract_columns(original_csv_name: &PathBuf, parsed_csv_name: &PathBuf, rules
             }
         }
     }
-    println!("Relevant idxs are {:?}", relevant_idxs);
+    debug!("Relevant idxs are {:?}", relevant_idxs);
 
     let mut writer = csv::Writer::from_writer(&parsed_csv_file);
     for record in rdr.records() {
@@ -108,6 +110,6 @@ fn extract_columns(original_csv_name: &PathBuf, parsed_csv_name: &PathBuf, rules
             .with_context(|| format!("There was an issue writing to file {:?}", &parsed_csv_file))?;
     }
 
-    println!("{} column extraction duration: {:?}", original_csv_name.to_string_lossy(), start.elapsed());
+    debug!("{} column extraction duration: {:?}", original_csv_name.to_string_lossy(), start.elapsed());
     Ok(())
 }

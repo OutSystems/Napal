@@ -4,14 +4,16 @@ use std::path::Path;
 use std::io::prelude::*;
 use handlebars::{Handlebars};
 use anyhow::{Context, Result};
+use log::{debug, info};
 
-use crate::parameters::Parameters;
+use crate::parameters::{Parameters, verify_file_exists};
 use crate::statistics::Statistics;
 
 
 pub fn generate_html(statistics: &Statistics, param: &Parameters) -> Result<()> {
     let start = Instant::now();
-    let template_location = param.base_directory.join("templates").join("template.hbs");
+    info!("Generating HTML..");
+    let template_location = verify_file_exists(&"templates/template.hbs".to_string());
 
     let mut handlebars = Handlebars::new();
     handlebars.register_template_file("table", &template_location)
@@ -25,6 +27,6 @@ pub fn generate_html(statistics: &Statistics, param: &Parameters) -> Result<()> 
     index_file.write_all(index_content.as_bytes())
         .with_context(|| format!("Could not write to file {:?}", index_path))?;
 
-    println!("Sequencial HTML generation: {:?}", start.elapsed());
+    debug!("Sequencial HTML generation: {:?}", start.elapsed());
     Ok(())
 }

@@ -1,5 +1,6 @@
 use std::time::Instant;
 use std::collections::HashMap;
+use log::{debug, info};
 use serde_json::value::{Map, Value as Json};
 use statrs::statistics::OrderStatistics;
 use statrs::statistics::Mean;
@@ -35,6 +36,7 @@ impl Statistics {
 
     pub fn calculate_statistics(loaded_data: &LoadedData) -> Statistics {
         let start = Instant::now();
+        info!("Calculating statistics..");
     
         let mut statistics: HashMap<String, HashMap<String, Stat>> = HashMap::new();
     
@@ -60,7 +62,7 @@ impl Statistics {
             }
         }
     
-        println!("Sequencial statistics calculation (can be parallelized): {:?}", start.elapsed());
+        debug!("Sequencial statistics calculation (can be parallelized): {:?}", start.elapsed());
     
         Statistics {
             stats: statistics
